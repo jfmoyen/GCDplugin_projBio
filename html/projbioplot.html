@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Calculates ternary coordinates projected from biotite (and...</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for projbioplot"><tr><td>projbioplot</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>
+Calculates ternary coordinates projected from biotite (and plots the ternary diagram)
+</h2>
+
+<h3>Description</h3>
+
+<p>The function <code>projbiocoords</code> calculates the coordinates used to define the projection, 
+whereas <code>projbioplot</code> calls <code>projbiocoords</code> and does the other operations needed 
+to define a template that will be used by <code>plotDiagram</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+    projbioplot(mins=FALSE,addWR=FALSE,ticks=FALSE,xmin=-2,xmax=1,ymin=-0.5,ymax=0.5)
+    projbiocoords(where=WR,add=FALSE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>mins</code></td>
+<td>
+<p>Boolean. If <code>TRUE</code>, the composition of ideal minerals will be plotted on 
+the diagram, namely &quot;q&quot;,&quot;fsp&quot;,&quot;an&quot;,&quot;an50&quot;,&quot;cz&quot;,&quot;Ep&quot;,&quot;sill&quot;,&quot;opx&quot;,&quot;cpx&quot;,&quot;olv&quot;,&quot;grs-Gt&quot;,&quot;Gt&quot;,&quot;NaCrd&quot;,&quot;Crd&quot;,&quot;bio&quot;,&quot;ms&quot;,&quot;MgHbl&quot;,&quot;Edn&quot; and &quot;Pgs&quot;. </p>
+</td></tr>
+<tr valign="top"><td><code>addWR</code></td>
+<td>
+<p>Boolean. If <code>TRUE</code>, the results of the calculations will be added to WR as new columns with colnames = <code>c("ms1","fsp","CaAl","bio")</code> </p>
+</td></tr>
+<tr valign="top"><td><code>ticks</code></td>
+<td>
+<p>Boolean. If <code>TRUE</code>, tick marks will be added to the side of the diagram (similar to the <code>ticks</code> option in <code>ternary</code> ) </p>
+</td></tr>
+<tr valign="top"><td><code>xmin, xmax, ymin, ymax</code></td>
+<td>
+<p>Numeric. Bounds of the plotting area, in rectangular coordinates. Note that the vertical axis (left side) is at x=0; (ms1 = 3 al + 2 (Na + K) is at x=0 and y=0.5, and CaAl = Ca + Al is at x=0 and y=-0.5); the fsp (=Al + (Na + K) ) is at <i>x=&radic;{3}/2</i> and y=0. Plagioclase an50 is at <i>x=-&radic;{3}/2</i> and y=0, and most points should fall to the right of it. The defaults are therefore sensible.</p>
+</td></tr>
+<tr valign="top"><td><code>where</code></td>
+<td>
+<p>A data matrix containing whole rock analyses, to be projected. By default <code>WR</code></p>
+</td></tr>
+<tr valign="top"><td><code>add</code></td>
+<td>
+<p>Boolean. If <code>TRUE</code>, the results of the calculations will be added to WR as new columns with colnames = <code>c("ms1","fsp","CaAl","bio")</code> </p>
+</td></tr> 
+</table>
+
+
+<h3>Details</h3>
+
+<p>The &quot;projection from biotite&quot; of <em>Moyen et al. (2016)</em> is based on four coordinates based on molar proportions:
+</p>
+<p style="text-align: center;"><i>ms1 = Al - Ca - NK</i></p>
+	
+<p style="text-align: center;"><i>fsp = -2 Al -2 Ca + 3 NK -1/3 FM</i></p>
+
+<p style="text-align: center;"><i>CaAl = Ca</i></p>
+
+<p style="text-align: center;"><i>bio = 1/3 FM</i></p>
+
+<p>where
+Al = molar Al
+</p>
+<p>Ca = molar Ca
+</p>
+<p>FM = molar Fe + molar Mg
+</p>
+<p>NK = molar Na + molar K
+</p>
+<p>molar proportions are calculated by <code>millications</code>.
+</p>
+<p>They are primarily used for plotting the relevant diagram (ms1-fsp-CaAl, note that bio 
+is dropped during plotting as this is projected from bio).
+</p>
+<p><code>projbiocoords</code> calculates the coordinates. It also has the side effect of (globally) 
+affecting its results to <code>results</code>, where they are available to <code>addResults</code>, 
+<code>r2clipboard(results)</code>, <code>HTMLTableResults</code>, etc.
+</p>
+<p><code>projbioplot</code> is used purely for defining a Figaro template. The values of the four 
+coordinates are calculated (and (globally) assigned to <code>results</code>). 
+If called with <code>plotDiagram</code>, the diagram is plotted, which is the real 
+use of the function.
+</p>
+<p>If used as a plugin, a GUI function <code>.projbioGUI</code> is also supplied 
+(and linked to the menu item), in charge of gathering the missing arguments and 
+calling <code>plotDiagram</code>.
+</p>
+<p><img src="../help/figures/projbio.png" alt="projbio.png" />
+
+</p>
+
+
+<h3>Value</h3>
+
+<p>For <code>projbioplot</code>, nothing. This function is meant only to be called via <code>plotDiagram</code>.
+</p>
+<p><code>projbiocoords</code> returns a matrix of 4 columns containing the new coordinates,  <code>(ms1,fsp,CaAl,bio)</code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Jean-François Moyen <a href="mailto:jfmoyen@gmail.com">jfmoyen@gmail.com</a>
+</p>
+
+
+<h3>References</h3>
+
+<p>Moyen JF, Laurent O, Chelle-Michou C, Couzinie S, Vanderhaeghe O, Zeh A, 
+Villaros A, Gardien V, 2016. Collision vs. subduction-related magmatism: 
+two contrasting ways of granite formation and implications for crustal growth. 
+Lithos in press.
+<a href="http://dx.doi.org/10.1016/j.lithos.2016.09.018">doi:10.1016/j.lithos.2016.09.018</a> 
+</p>
+<p>and in particular the supplementary item SE4 &quot;Multivariate statistics and 
+projection for granitic rocks&quot;.
+</p>
+
+
+<h3>See Also</h3>
+
+<p>plotDiagram millications
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+    data(sazava)
+    accessVar("sazava")
+    projbiocoords()
+    plotDiagram("projbioplot")
+
+    plotDiagram("projbioplot",mins=T,xmin=-1)
+</pre>
+
+
+</body></html>
